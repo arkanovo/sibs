@@ -50,7 +50,7 @@ public class EnemyScript : MonoBehaviour {
 	public void DamageGet(float Damage)
 	{
 		hp-=Damage;
-		rb.AddForce(new Vector2(transform.localScale.x * -30f,0),ForceMode2D.Impulse);
+		rb.AddForce(new Vector2(transform.localScale.x * -90f,0));
 		if(hp<=0)
 			death();
 	}

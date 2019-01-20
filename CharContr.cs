@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharContr : MonoBehaviour {
 	[Range(0, .3f)] [SerializeField] private float MovementSmoothing = .05f;
@@ -11,9 +12,12 @@ public class CharContr : MonoBehaviour {
 	private bool Grounded;
 	public bool FacingRight = true;
 	private Rigidbody2D RB2D;
+	public float hp;
+	public float Maxhp = 10;
 	private Vector3 velocity = Vector3.zero;
 	private void Awake()
 	{
+		hp = Maxhp;
 		RB2D = GetComponent<Rigidbody2D>();	
 	}
 	private void FixedUpdate()
@@ -50,5 +54,24 @@ public class CharContr : MonoBehaviour {
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+	public void DamageGet(float damage)
+	{
+		hp-=damage;
+		if(hp<=0)
+		{
+			Die();
+		}
+	}
+	IEnumerator WaitFor(int sec)
+	{	
+		PlayerMovement PM = this.GetComponent<PlayerMovement>();
+		PM.runSpeed = 0f;
+		yield return new WaitForSeconds(sec);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);		
+	}
+	public void Die()
+	{
+		StartCoroutine(WaitFor(3));
 	}
 }	
